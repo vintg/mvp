@@ -1,0 +1,51 @@
+#messages li:nth-child(even) {
+    background: aliceblue;
+}
+#messages li {
+    padding: .5em 1em;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+li {
+    display: list-item;
+}
+#messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 3em;
+}
+body {
+    font: 2em Lato, Helvetica, Arial;
+    width: 100%;
+}
+form {
+    background:aliceblue;
+    padding: .3em;
+    position: fixed;
+    bottom: .3em;
+    width: 100%;
+}
+form input {
+    padding: 1em;
+    width: 90%;
+    margin-right: 1%;
+    border-radius: 2em;
+}
+form button {
+    width: 9%;
+    background: aliceblue;
+    border: none; padding: 1em;
+}

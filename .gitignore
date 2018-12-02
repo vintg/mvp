@@ -1,3 +1,6 @@
+# key
+*.json
+
 # Logs
 logs
 *.log
