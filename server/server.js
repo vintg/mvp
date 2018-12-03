@@ -29,23 +29,34 @@ http.listen(port, ()=> {
   console.log(`listening on *:${port}`);
 });
 
-const {Translate} = require('@google-cloud/translate');
-const projectId = 'hybrid-reactor-224304';
-const translate = new Translate({
-  projectId: projectId,
-});
+// const translate = require('google-translate-api');
 
-const text = 'Hello, world!';
-const target = 'ru';
+// translate('Ik spreek Engels', {to: 'en'}).then(res => {
+//     console.log(res.text);
+//     //=> I speak English
+//     console.log(res.from.language.iso);
+//     //=> nl
+// }).catch(err => {
+//     console.error(err);
+// });
 
-translate
-  .translate(text, target)
-  .then(results => {
-    const translation = results[0];
+// const {Translate} = require('@google-cloud/translate');
+// const projectId = 'hybrid-reactor-224304';
+// const translate = new Translate({
+//   projectId: projectId,
+// });
 
-    console.log(`Text: ${text}`);
-    console.log(`Translation: ${translation}`);
-  })
-  .catch(err => {
-    console.error('ERROR:', err);
-  });
+// const text = 'Hello, world!';
+// const target = 'ru';
+
+// translate
+//   .translate(text, target)
+//   .then(results => {
+//     const translation = results[0];
+
+//     console.log(`Text: ${text}`);
+//     console.log(`Translation: ${translation}`);
+//   })
+//   .catch(err => {
+//     console.error('ERROR:', err);
+//   });
