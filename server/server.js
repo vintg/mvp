@@ -7,6 +7,8 @@ const port = process.env.PORT || 3000;
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const translate = require('@k3rn31p4nic/google-translate-api');
+const Chats = require('../db/Chats');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -14,32 +16,33 @@ app.use(compression());
 app.use(express.static(`${__dirname}/../client/dist`));
 app.use(cors());
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   console.log('a user connected');
-  socket.on('chat message', (msg)=>{
+
+  socket.on('chat message', msg => {
     console.log('message: ' + msg);
-    if(msg.length>0) io.emit('chat message', msg);
+    translate(msg, { to: 'en' }).then(res => {
+      let tm = res.text;
+      console.log('\ttranslation: ', res.text);
+      if(msg.length>0) {
+        io.emit('chat message', msg +' ('+ tm + ')');
+      }
+    }).catch(err => {
+     console.error('err during translate',err);
+    });
   });
-  socket.on('disconnect', ()=> {
+
+  socket.on('disconnect', () => {
     console.log('user disconnected');
   });
+
 });
 
-http.listen(port, ()=> {
-  console.log(`listening on *:${port}`);
+http.listen(port, () => {
+  console.log(`server listening on ${JSON.stringify(http.address())}`);
 });
 
-// const translate = require('google-translate-api');
-
-// translate('Ik spreek Engels', {to: 'en'}).then(res => {
-//     console.log(res.text);
-//     //=> I speak English
-//     console.log(res.from.language.iso);
-//     //=> nl
-// }).catch(err => {
-//     console.error(err);
-// });
-
+//CLOUD TRANSLATE - REQ BILLING?!
 // const {Translate} = require('@google-cloud/translate');
 // const projectId = 'hybrid-reactor-224304';
 // const translate = new Translate({
@@ -47,7 +50,7 @@ http.listen(port, ()=> {
 // });
 
 // const text = 'Hello, world!';
-// const target = 'ru';
+// const target = 'zh-CN';
 
 // translate
 //   .translate(text, target)

@@ -14,13 +14,12 @@ li {
 }
 #messages {
     list-style-type: none;
-    margin: 0;
+    margin: 2em;
     padding: 0;
     width: 100%;
 }
 ul, menu, dir {
     display: block;
-    list-style-type: disc;
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
@@ -30,6 +29,7 @@ ul, menu, dir {
 body {
     font: 2em Lato, Helvetica, Arial;
     width: 100%;
+    background: #888;
 }
 form {
     background:aliceblue;
