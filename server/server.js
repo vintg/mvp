@@ -16,20 +16,33 @@ app.use(compression());
 app.use(express.static(`${__dirname}/../client/dist`));
 app.use(cors());
 
+app.post('/save', function (req, res) {
+  const chatLog = req.body.data;
+  var saveChat = new Chats(chatLog);
+  saveChat.save()
+  .then(data => res.status(201).send('chat saved'))
+  .catch(err => console.error(err));
+});
+
 io.on('connection', socket => {
   console.log('a user connected');
 
   socket.on('chat message', msg => {
     console.log('message: ' + msg);
-    translate(msg, { to: 'en' }).then(res => {
+
+    translate(msg, { to: 'en' })
+    .then(res => {
       let tm = res.text;
       console.log('\ttranslation: ', res.text);
       if(msg.length>0) {
-        io.emit('chat message', msg +' ('+ tm + ')');
+        //io.emit(`chat message: ${msg} (${tm})`);
+        // planning on splitting view and toggle hidden into display
+        io.emit('chat message', {'original': msg, 'translated': tm});
       }
     }).catch(err => {
      console.error('err during translate',err);
     });
+
   });
 
   socket.on('disconnect', () => {
@@ -38,28 +51,4 @@ io.on('connection', socket => {
 
 });
 
-http.listen(port, () => {
-  console.log(`server listening on ${JSON.stringify(http.address())}`);
-});
-
-//CLOUD TRANSLATE - REQ BILLING?!
-// const {Translate} = require('@google-cloud/translate');
-// const projectId = 'hybrid-reactor-224304';
-// const translate = new Translate({
-//   projectId: projectId,
-// });
-
-// const text = 'Hello, world!';
-// const target = 'zh-CN';
-
-// translate
-//   .translate(text, target)
-//   .then(results => {
-//     const translation = results[0];
-
-//     console.log(`Text: ${text}`);
-//     console.log(`Translation: ${translation}`);
-//   })
-//   .catch(err => {
-//     console.error('ERROR:', err);
-//   });
+http.listen(port, () => console.log(`server listening @${JSON.stringify(http.address())}`));
