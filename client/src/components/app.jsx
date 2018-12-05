@@ -5,7 +5,7 @@ import axios from 'axios';
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = { checked: false };
+    this.state = { checked: true };
     this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount(){
