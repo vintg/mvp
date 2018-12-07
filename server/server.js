@@ -25,30 +25,20 @@ app.post('/save', function (req, res) {
 });
 
 io.on('connection', socket => {
-  console.log('a user connected');
+  console.log(`${socket.id} user connected`);
 
   socket.on('chat message', msg => {
-    console.log('message: ' + msg);
-
     translate(msg, { to: 'en' })
     .then(res => {
-      let tm = res.text;
-      console.log('\ttranslation: ', res.text);
+      console.log('\tmessage: ' + msg);
+      console.log('\ttranslation: ' + res.text);
       if(msg.length>0) {
-        //io.emit(`chat message: ${msg} (${tm})`);
-        // planning on splitting view and toggle hidden into display
-        io.emit('chat message', {'original': msg, 'translated': tm});
+        io.emit('chat message', {'original': msg, 'translated': res.text});
       }
-    }).catch(err => {
-     console.error('err during translate',err);
-    });
-
+    }).catch(err => console.error('err during translate',err));
   });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-
+  socket.on('disconnect', () => console.log(`${socket.id} disconnected`));
 });
 
 http.listen(port, () => console.log(`server listening @${JSON.stringify(http.address())}`));

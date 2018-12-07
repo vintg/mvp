@@ -1,11 +1,29 @@
 import React from 'react';
-import MaterialDesignSwitch from './mdswitch';
 import axios from 'axios';
+import io from 'socket.io-client';
+//const socket = io('http://localhost:3000');
+
+import MaterialDesignSwitch from './mdswitch';
+import Messenger from './messenger';
+
+  // $('form').submit(function(){
+  //   socket.emit('chat message', $('#msg').val());
+  //   $('#msg').val('');
+  //   return false;
+  // });
+  // socket.on('chat message', function(msg){
+  //   $('#messages').append($('<li>').text(msg.translated));
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // });
+
 
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = { checked: true };
+    this.state = {
+      checked: true,
+      chatHistory: {}
+    };
     this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount(){
@@ -14,8 +32,11 @@ class App extends React.Component {
   handleChange() {
     this.setState({ checked: !this.state.checked });
   }
+  handleSend(){
+
+  }
   saveChat(){
-    let data = { /* TO-DO */ };
+    const data = this.state.chatHistory;
     axios.post('/save', { data })
     .then(res => console.log(res))
     .catch(err => console.log(err));
@@ -30,11 +51,7 @@ class App extends React.Component {
         />
       </div>
 
-      <ul id = "messages"></ul>
-      <form action="">
-        <input id="m" autoComplete="off" />
-        <button>Send</button>
-      </form>
+      <Messenger />
     </div>
     );
   }
